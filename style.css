@@ -95,7 +95,7 @@ h2.dots { font-size: clamp(34px, 6vw, 68px); }
 /* Header */
 .top {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto;
   align-items: center;
   gap: 18px;
   padding: 18px var(--pad);
@@ -106,6 +106,8 @@ h2.dots { font-size: clamp(34px, 6vw, 68px); }
 .top nav { display: flex; gap: 11px; font-size: 13px; color: var(--muted); white-space: nowrap; }
 .top nav a:hover { color: var(--ink); }
 .lang {
+  position: absolute; top: 16px; right: var(--pad); z-index: 3;
+  background: var(--paper);
   font: 500 12px/1 var(--mono);
   border: 1px solid var(--line);
   padding: 8px 10px;
@@ -114,7 +116,7 @@ h2.dots { font-size: clamp(34px, 6vw, 68px); }
 .lang:hover { text-decoration: none; border-color: var(--ink); }
 
 /* Hero: two columns. Left = nav on top, copy anchored to the bottom. Right = full-height plate with a product card. */
-.hero-grid { display: grid; grid-template-columns: 60% 1fr; grid-template-rows: auto 1fr; min-height: min(760px, calc(100vh - 1px)); }
+.hero-grid { position: relative; display: grid; grid-template-columns: 60% 1fr; grid-template-rows: auto 1fr; min-height: min(760px, calc(100vh - 1px)); }
 .hero-grid .top { grid-column: 1; grid-row: 1; padding-right: 6px; gap: 10px; }
 .hero-grid main { display: contents; }
 .hero { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; justify-content: flex-end; padding: 48px var(--pad) 56px; border-bottom: 0; }
@@ -219,7 +221,7 @@ h2.dots { font-size: clamp(34px, 6vw, 68px); }
 /* Responsive */
 @media (max-width: 1150px) {
   /* nav no longer fits beside the panel: header spans both columns, panel starts below it */
-  .hero-grid .top { grid-column: 1 / -1; padding-right: var(--pad); }
+  .hero-grid .top { grid-column: 1 / -1; padding-right: calc(var(--pad) + 56px); }
   .hero-panel { grid-row: 2; }
 }
 @media (max-width: 1000px) {
