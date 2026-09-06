@@ -59,6 +59,7 @@ if (!offline) {
     } catch (e) { return [u, e.message]; }
   }));
   for (const [u, s] of results) {
+    if (u.includes("linkedin.com") && s === 999) continue; // LinkedIn answers 999 to every non-browser client
     if (typeof s !== "number" || s >= 400) fail(`link ${u} → ${s}`);
   }
   ok(`${links.size} external links checked`);
