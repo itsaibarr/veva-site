@@ -20,7 +20,7 @@ RAMP = " .'`,:;-~=+*#%@"          # light → dark
 # name: (source, output size, crop box as fractions (l,t,r,b), mirror, fades (l,t,r,b) as fraction of width/height)
 PLATES = {
     "hero":    ("hero.jpg",    (960, 1280), (0, 0, 1, 1),        True,  (0.25, 0.0, 0.0, 0.5)),
-    "veva":    ("veva.jpg",    (720, 960),  (0, 0, 1, 1),        False, (0.15, 0.15, 0.15, 0.25)),
+    "veva":    ("dna.jpg",     (600, 1100), (0, 0, 1, 1),        False, (0.1, 0.12, 0.1, 0.15)),
     "step1":   ("step1.jpg",   (800, 600),  (0, 0.12, 1, 0.87),  False, (0.15, 0.15, 0.15, 0.2)),
     "step2":   ("veva.jpg",    (800, 600),  (0.1, 0.05, 0.9, 0.65), False, (0.15, 0.15, 0.15, 0.2)),  # temporary crop until the laptop plate exists
     "step3":   ("step3.jpg",   (800, 600),  (0, 0.12, 1, 0.87),  False, (0.15, 0.15, 0.15, 0.2)),

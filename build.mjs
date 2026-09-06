@@ -87,8 +87,6 @@ ${FONTS(t.lang).map((f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" 
 </aside>
 </div>
 
-<ul class="meta hero-meta">${kv(t.hero.meta)}</ul>
-
 <section id="help">
   ${sectionHead(t.help)}
   <ol class="tiles">${numbered(t.help.items)}</ol>
@@ -105,8 +103,7 @@ ${FONTS(t.lang).map((f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" 
 <section id="veva">
   ${sectionHead(t.veva)}
   <p class="intro">${esc(t.veva.intro)}</p>
-  <div class="veva-body"><img class="plate-veva" src="/assets/ascii/veva.png" width="720" height="960" alt="" loading="lazy" decoding="async"><ol class="qs">${numbered(t.veva.items)}</ol></div>
-  <p class="note label">${esc(t.veva.note)}</p>
+  <div class="veva-body"><img class="plate-veva" src="/assets/ascii/veva.png" width="600" height="1100" alt="" loading="lazy" decoding="async"><ol class="qs">${numbered(t.veva.items)}</ol></div>
 </section>
 
 <section id="how">
@@ -117,14 +114,12 @@ ${FONTS(t.lang).map((f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" 
 
 <section id="contact">
   ${sectionHead(t.contact)}
-  <p class="intro">${esc(t.contact.intro)}</p>
   <img class="plate-contact" src="/assets/ascii/contact.png" width="1500" height="500" alt="" loading="lazy" decoding="async">
   <ul class="channels">${t.contact.items.map(([k, c]) => `<li><span class="label">${esc(k)}</span><a href="${esc(c.href)}"${ext(c.href)}>${esc(c.value)}</a></li>`).join("")}</ul>
 </section>
 </main>
 
 <footer class="foot">
-  <p>${esc(t.footer.line)}</p>
   <p>${a(t.footer.veva)} · ${langLink()}</p>
 </footer>
 

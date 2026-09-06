@@ -34,8 +34,6 @@ const LINKS = {
   veva: "https://veva.kz",
 };
 
-export const BUILT_ON = "2026-09-07";
-
 // Section order, shared by the nav, the template and the test.
 export const SECTIONS = ["help", "work", "veva", "how", "contact"];
 
@@ -59,11 +57,6 @@ export const CONTENT = {
       title: ["ИИ.", "АВТОМАТИЗАЦИЯ.", "ПРОДУКТ."],
       lead:
         "Собираю ИИ-интеграции, внутренние инструменты и сайты, которыми бизнес реально пользуется. В 2026 году запустил пять продуктов на своих доменах, все в одиночку, каждый открывается по ссылке.",
-      meta: [
-        ["ГДЕ", "Астана, GMT+5"],
-        ["СТЕК", "TypeScript · Python · LLM API"],
-        ["2026", "5 продуктов на своих доменах"],
-      ],
       cta: { label: "Написать в Telegram", href: CONTACT.telegram.href },
       cta2: { label: "Смотреть работы", href: "#work" },
     },
@@ -193,7 +186,6 @@ export const CONTENT = {
         ["Направление «IT | Автоматизация»", "От ТЗ до рабочего прототипа за дни, а не недели, для модулей, которые вы уже продаёте клиентам."],
         ["Цифровые продукты", "Курс из шести модулей: посадочная, запись, материалы. И видимость VEVA, когда предприниматель спрашивает у ИИ, кому доверить бухгалтерию в Астане."],
       ],
-      note: "Источник: открытые страницы veva.kz, сентябрь 2026.",
     },
     how: {
       label: "04 — Как работаю",
@@ -212,7 +204,6 @@ export const CONTENT = {
     contact: {
       label: "05 — Контакт",
       title: "НАПИШИТЕ МНЕ",
-      intro: "Есть задача или идея: напишите, отвечу в тот же день. Быстрее всего в Telegram.",
       items: [
         ["TELEGRAM", CONTACT.telegram],
         ["WHATSAPP", CONTACT.whatsapp],
@@ -222,7 +213,6 @@ export const CONTENT = {
       ],
     },
     footer: {
-      line: `Собрано ${BUILT_ON} к встрече с VEVA. Без фреймворков: HTML, CSS и один скрипт сборки.`,
       veva: { label: "veva.kz", href: LINKS.veva },
     },
   },
@@ -239,11 +229,6 @@ export const CONTENT = {
       title: ["AI.", "AUTOMATION.", "PRODUCT."],
       lead:
         "I build AI integrations, internal tools and websites a business actually uses. In 2026 I launched five products on their own domains, all solo, each one link away.",
-      meta: [
-        ["WHERE", "Astana, GMT+5"],
-        ["STACK", "TypeScript · Python · LLM APIs"],
-        ["2026", "5 products on their own domains"],
-      ],
       cta: { label: "Message me on Telegram", href: CONTACT.telegram.href },
       cta2: { label: "See the work", href: "#work" },
     },
@@ -373,7 +358,6 @@ export const CONTENT = {
         ["The IT | Automation line", "From specification to working prototype in days rather than weeks, for the modules you already sell to clients."],
         ["Digital products", "The six-module course: landing page, enrolment, materials. And VEVA's visibility when a business owner asks an AI who to trust with accounting in Astana."],
       ],
-      note: "Source: public pages of veva.kz, September 2026.",
     },
     how: {
       label: "04 — How I work",
@@ -392,7 +376,6 @@ export const CONTENT = {
     contact: {
       label: "05 — Contact",
       title: "WRITE TO ME",
-      intro: "Have a task or an idea? Write and I will answer the same day. Telegram is fastest.",
       items: [
         ["TELEGRAM", CONTACT.telegram],
         ["WHATSAPP", CONTACT.whatsapp],
@@ -402,7 +385,6 @@ export const CONTENT = {
       ],
     },
     footer: {
-      line: `Built ${BUILT_ON} for a meeting with VEVA. No frameworks: HTML, CSS and one build script.`,
       veva: { label: "veva.kz", href: LINKS.veva },
     },
   },

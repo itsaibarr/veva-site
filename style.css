@@ -51,7 +51,7 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.005em; line-height: 1
   border-right: 1px solid var(--line);
   min-height: 100vh;
 }
-section, .top, .foot, .hero-grid, .hero-meta { border-bottom: 1px solid var(--line); }
+section, .top, .foot, .hero-grid { border-bottom: 1px solid var(--line); }
 section { padding: clamp(40px, 6vw, 72px) var(--pad); }
 
 /* Labels and display type */
@@ -122,7 +122,6 @@ h2.dots { font-size: clamp(34px, 6vw, 68px); }
 .plate-hero { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 0; }
 .lead { max-width: 30ch; font-size: clamp(17px, 1.6vw, 19px); line-height: 1.5; margin-bottom: 28px; }
 .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
-.hero-meta { border-left: 0; border-right: 0; border-top: 0; }
 .btn {
   display: inline-block;
   padding: 14px 20px;
@@ -137,8 +136,8 @@ h2.dots { font-size: clamp(34px, 6vw, 68px); }
 .btn.ghost:hover { background: var(--paper-2); border-color: var(--ink); }
 
 /* ASCII plates in the body sections */
-.veva-body { display: grid; grid-template-columns: 280px 1fr; gap: 28px; align-items: start; }
-.plate-veva { width: 100%; height: auto; display: block; }
+.veva-body { display: grid; grid-template-columns: 300px 1fr; gap: 28px; align-items: stretch; }
+.plate-veva { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
 .plate-step { width: 100%; height: auto; display: block; margin: -6px 0 10px; }
 .plate-contact { width: 100%; height: auto; display: block; margin: -12px 0 12px; }
 
@@ -215,7 +214,7 @@ h2.dots { font-size: clamp(34px, 6vw, 68px); }
 .channels a { font-size: clamp(17px, 2.2vw, 22px); font-weight: 500; letter-spacing: -0.01em; overflow-wrap: anywhere; }
 
 /* Footer */
-.foot { padding: 24px var(--pad); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); border-bottom: 0; }
+.foot { padding: 24px var(--pad); display: flex; justify-content: flex-end; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); border-bottom: 0; }
 
 /* Responsive */
 @media (max-width: 1150px) {
@@ -233,7 +232,7 @@ h2.dots { font-size: clamp(34px, 6vw, 68px); }
 }
 @media (max-width: 760px) {
   .veva-body { grid-template-columns: 1fr; }
-  .plate-veva { max-height: 320px; width: auto; max-width: 100%; }
+  .plate-veva { height: 360px; width: 100%; object-fit: contain; }
   .top { grid-template-columns: 1fr auto; }
   .top nav { display: none; }
   .hero-grid { grid-template-rows: auto auto 340px; }
