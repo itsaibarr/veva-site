@@ -100,7 +100,7 @@ h2.dots { font-size: clamp(34px, 6vw, 68px); }
   gap: 18px;
   padding: 18px var(--pad);
 }
-.brand { font-size: 24px; white-space: nowrap; }
+.brand { font-size: 18px; white-space: nowrap; }
 .brand span { -webkit-mask-image: radial-gradient(circle, #000 0 44%, transparent 50%); mask-image: radial-gradient(circle, #000 0 44%, transparent 50%); }
 .brand:hover { text-decoration: none; }
 .top nav { display: flex; gap: 11px; font-size: 13px; color: var(--muted); white-space: nowrap; }
