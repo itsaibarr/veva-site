@@ -69,7 +69,7 @@ ${FONTS(t.lang).map((f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" 
 <div class="frame">
 <div class="hero-grid">
 <header class="top">
-  <a class="brand" href="${t.path}">${esc(t.hero.label.split(" · ")[0])}</a>
+  <a class="brand dots" href="${t.path}"><span>${esc(t.hero.label.split(" · ")[0])}</span></a>
   <nav aria-label="${t.lang === "ru" ? "Разделы" : "Sections"}">${SECTIONS.map((id, i) => `<a href="#${id}">${esc(t.nav[i])}</a>`).join("")}</nav>
   ${langLink("lang")}
 </header>
