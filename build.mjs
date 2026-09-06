@@ -84,10 +84,6 @@ ${FONTS(t.lang).map((f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" 
 
 <aside class="hero-panel" aria-hidden="true">
   <img class="plate-hero" src="/assets/ascii/hero.png" width="960" height="1280" alt="" decoding="async">
-  <figure class="hero-card">
-    <figcaption><span>resona.work</span><span>${esc(t.work.items[0].status)}</span></figcaption>
-    <img src="/assets/half/resona.png" width="1200" height="750" alt="" decoding="async">
-  </figure>
 </aside>
 </div>
 
