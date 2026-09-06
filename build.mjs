@@ -18,9 +18,9 @@ const dots = (lines, tag = "h1") => `<${tag} class="dots">${lines.map((l) => `<s
 const sectionHead = (s) => `<div class="shead"><p class="label">${esc(s.label)}</p>${dots([s.title], "h2")}</div>`;
 const nn = (i) => String(i + 1).padStart(2, "0");
 // numbered list items: [heading, text] or {title, text, ev}
-const numbered = (items) => items.map((it, i) => {
+const numbered = (items, lead = () => "") => items.map((it, i) => {
   const [h, p, ev] = Array.isArray(it) ? it : [it.title, it.text, it.ev];
-  return `<li><span class="label">${nn(i)}</span><h3>${esc(h)}</h3><p>${esc(p)}</p>${ev ? `<p class="ev">${esc(ev)}</p>` : ""}</li>`;
+  return `<li>${lead(i)}<span class="label">${nn(i)}</span><h3>${esc(h)}</h3><p>${esc(p)}</p>${ev ? `<p class="ev">${esc(ev)}</p>` : ""}</li>`;
 }).join("");
 const kv = (pairs) => pairs.map(([k, v]) => `<li><span class="label">${esc(k)}</span><span>${esc(v)}</span></li>`).join("");
 
@@ -75,6 +75,7 @@ ${FONTS(t.lang).map((f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" 
 
 <main>
 <section class="hero" id="hero">
+  <img class="plate-hero" src="/assets/ascii/hero.png" width="960" height="1280" alt="" decoding="async" fetchpriority="low">
   <p class="label">${esc(t.hero.label)}</p>
   ${dots(t.hero.title)}
   <p class="lead">${esc(t.hero.lead)}</p>
@@ -98,19 +99,20 @@ ${FONTS(t.lang).map((f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" 
 <section id="veva">
   ${sectionHead(t.veva)}
   <p class="intro">${esc(t.veva.intro)}</p>
-  <ol class="qs">${numbered(t.veva.items)}</ol>
+  <div class="veva-body"><img class="plate-veva" src="/assets/ascii/veva.png" width="720" height="960" alt="" loading="lazy" decoding="async"><ol class="qs">${numbered(t.veva.items)}</ol></div>
   <p class="note label">${esc(t.veva.note)}</p>
 </section>
 
 <section id="how">
   ${sectionHead(t.how)}
-  <ol class="steps">${numbered(t.how.steps)}</ol>
+  <ol class="steps">${numbered(t.how.steps, (i) => `<img class="plate-step" src="/assets/ascii/step${i + 1}.png" width="800" height="600" alt="" loading="lazy" decoding="async">`)}</ol>
   <ul class="meta facts">${kv(t.how.facts)}</ul>
 </section>
 
 <section id="contact">
   ${sectionHead(t.contact)}
   <p class="intro">${esc(t.contact.intro)}</p>
+  <img class="plate-contact" src="/assets/ascii/contact.png" width="1500" height="500" alt="" loading="lazy" decoding="async">
   <ul class="channels">${t.contact.items.map(([k, c]) => `<li><span class="label">${esc(k)}</span><a href="${esc(c.href)}"${ext(c.href)}>${esc(c.value)}</a></li>`).join("")}</ul>
 </section>
 </main>
