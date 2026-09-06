@@ -30,7 +30,6 @@ html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   margin: 0;
-  overflow-x: clip;
   background: var(--paper);
   color: var(--ink);
   font: 400 16px/1.55 var(--sans);
@@ -52,7 +51,7 @@ h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.005em; line-height: 1
   border-right: 1px solid var(--line);
   min-height: 100vh;
 }
-section, .top, .foot { border-bottom: 1px solid var(--line); }
+section, .top, .foot, .hero-grid, .hero-meta { border-bottom: 1px solid var(--line); }
 section { padding: clamp(40px, 6vw, 72px) var(--pad); }
 
 /* Labels and display type */
@@ -72,7 +71,7 @@ section { padding: clamp(40px, 6vw, 72px) var(--pad); }
 }
 .dots span { display: block; }
 .dots span + span { margin-top: 0.125em; }
-h1.dots { font-size: clamp(40px, 9.4vw, 104px); margin: 24px 0 36px; }
+h1.dots { font-size: clamp(40px, 5.2vw, 64px); margin: 20px 0 28px; }
 h2.dots { font-size: clamp(34px, 6vw, 68px); }
 /* Dot-matrix screen: Tiny5 is drawn on a 1/8em pixel grid, so one mask cell per pixel turns every pixel into one dot. */
 .dots span {
@@ -95,16 +94,14 @@ h2.dots { font-size: clamp(34px, 6vw, 68px); }
 
 /* Header */
 .top {
-  position: relative;
-  z-index: 2;
   display: grid;
   grid-template-columns: 1fr auto auto;
   align-items: center;
-  gap: 24px;
+  gap: 18px;
   padding: 18px var(--pad);
 }
-.brand { font: 600 15px/1 var(--sans); letter-spacing: -0.01em; }
-.top nav { display: flex; gap: 22px; font-size: 14px; color: var(--muted); }
+.brand { font: 600 15px/1 var(--sans); letter-spacing: -0.01em; white-space: nowrap; }
+.top nav { display: flex; gap: 14px; font-size: 13px; color: var(--muted); white-space: nowrap; }
 .top nav a:hover { color: var(--ink); }
 .lang {
   font: 500 12px/1 var(--mono);
@@ -114,17 +111,19 @@ h2.dots { font-size: clamp(34px, 6vw, 68px); }
 }
 .lang:hover { text-decoration: none; border-color: var(--ink); }
 
-/* Hero */
-.hero { padding-top: clamp(56px, 9vw, 120px); position: relative; }
-.hero > * { position: relative; z-index: 1; }
-/* ASCII plates: ink on transparent, edges pre-faded to the page */
-.plate-hero { position: absolute; z-index: 0; top: -66px; right: -130px; height: 700px; width: auto; pointer-events: none; }
-.veva-body { display: grid; grid-template-columns: 280px 1fr; gap: 28px; align-items: start; }
-.plate-veva { width: 100%; height: auto; display: block; }
-.plate-step { width: 100%; height: auto; display: block; margin: -6px 0 10px; }
-.plate-contact { width: 100%; height: auto; display: block; margin: -12px 0 12px; }
-.lead { max-width: 58ch; font-size: clamp(18px, 2vw, 21px); line-height: 1.5; margin-bottom: 32px; }
-.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 48px; }
+/* Hero: two columns. Left = nav on top, copy anchored to the bottom. Right = full-height plate with a product card. */
+.hero-grid { display: grid; grid-template-columns: 60% 1fr; grid-template-rows: auto 1fr; min-height: min(760px, calc(100vh - 1px)); }
+.hero-grid .top { grid-column: 1; grid-row: 1; padding-right: 24px; }
+.hero-grid main { display: contents; }
+.hero { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; justify-content: flex-end; padding: 48px var(--pad) 56px; border-bottom: 0; }
+.hero-panel { grid-column: 2; grid-row: 1 / span 2; position: relative; overflow: hidden; border-left: 1px solid var(--line); background: var(--paper-2); }
+.plate-hero { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 0; }
+.hero-card { position: absolute; left: 22%; top: 26%; width: 92%; margin: 0; background: var(--paper); border: 1px solid var(--line); box-shadow: 0 24px 60px rgba(17, 17, 17, 0.08); }
+.hero-card figcaption { display: flex; justify-content: space-between; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--line); font: 500 11px/1 var(--mono); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); }
+.hero-card img { display: block; width: 100%; height: auto; }
+.lead { max-width: 30ch; font-size: clamp(17px, 1.6vw, 19px); line-height: 1.5; margin-bottom: 28px; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.hero-meta { border-left: 0; border-right: 0; border-top: 0; }
 .btn {
   display: inline-block;
   padding: 14px 20px;
@@ -138,6 +137,12 @@ h2.dots { font-size: clamp(34px, 6vw, 68px); }
 .btn.ghost { background: transparent; color: var(--ink); }
 .btn.ghost:hover { background: var(--paper-2); border-color: var(--ink); }
 
+/* ASCII plates in the body sections */
+.veva-body { display: grid; grid-template-columns: 280px 1fr; gap: 28px; align-items: start; }
+.plate-veva { width: 100%; height: auto; display: block; }
+.plate-step { width: 100%; height: auto; display: block; margin: -6px 0 10px; }
+.plate-contact { width: 100%; height: auto; display: block; margin: -12px 0 12px; }
+
 /* Shared-line grids: gap of 1px over the line colour draws every divider once */
 .meta, .tiles, .cards, .also, .qs, .steps, .channels {
   display: grid;
@@ -145,7 +150,7 @@ h2.dots { font-size: clamp(34px, 6vw, 68px); }
   background: var(--line);
   border: 1px solid var(--line);
 }
-.meta > li, .tiles > li, .card, .also > li, .qs > li, .steps > li, .channels > li { background: var(--paper); }
+.meta > li, .tiles > li, .card, .also > li, .qs > li, .steps > li, .channels > li { background: var(--paper); min-width: 0; }
 
 .meta { grid-template-columns: repeat(3, 1fr); }
 .meta > li { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px; font-size: 15px; }
@@ -215,15 +220,22 @@ h2.dots { font-size: clamp(34px, 6vw, 68px); }
 
 /* Responsive */
 @media (max-width: 1000px) {
+  .hero-grid { grid-template-columns: 1fr; grid-template-rows: auto auto 460px; min-height: 0; }
+  .hero-grid .top, .hero { grid-column: 1; }
+  .hero { grid-row: 2; padding-top: 56px; }
+  .hero-panel { grid-column: 1; grid-row: 3; border-left: 0; border-top: 1px solid var(--line); }
+  .hero-card { left: 12%; top: 18%; width: 100%; }
   .tiles { grid-template-columns: repeat(3, 1fr); }
   .also { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 760px) {
-  .plate-hero { top: -50px; right: 0; height: 280px; opacity: 0.55; }
   .veva-body { grid-template-columns: 1fr; }
   .plate-veva { max-height: 320px; width: auto; max-width: 100%; }
   .top { grid-template-columns: 1fr auto; }
   .top nav { display: none; }
+  .hero-grid { grid-template-rows: auto auto 340px; }
+  h1.dots { font-size: clamp(34px, 9.4vw, 64px); }
+  .lead { max-width: none; }
   .cards, .qs, .steps, .meta { grid-template-columns: 1fr; }
   .tiles, .also { grid-template-columns: 1fr; }
   .fields { grid-template-columns: 1fr; }

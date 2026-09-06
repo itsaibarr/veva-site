@@ -67,6 +67,7 @@ ${FONTS(t.lang).map((f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" 
 </head>
 <body>
 <div class="frame">
+<div class="hero-grid">
 <header class="top">
   <a class="brand" href="${t.path}">${esc(t.hero.label.split(" · ")[0])}</a>
   <nav aria-label="${t.lang === "ru" ? "Разделы" : "Sections"}">${SECTIONS.map((id, i) => `<a href="#${id}">${esc(t.nav[i])}</a>`).join("")}</nav>
@@ -75,13 +76,22 @@ ${FONTS(t.lang).map((f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" 
 
 <main>
 <section class="hero" id="hero">
-  <img class="plate-hero" src="/assets/ascii/hero.png" width="960" height="1280" alt="" decoding="async" fetchpriority="low">
   <p class="label">${esc(t.hero.label)}</p>
   ${dots(t.hero.title)}
   <p class="lead">${esc(t.hero.lead)}</p>
   <div class="ctas">${a(t.hero.cta, "btn")}${a(t.hero.cta2, "btn ghost")}</div>
-  <ul class="meta">${kv(t.hero.meta)}</ul>
 </section>
+
+<aside class="hero-panel" aria-hidden="true">
+  <img class="plate-hero" src="/assets/ascii/hero.png" width="960" height="1280" alt="" decoding="async">
+  <figure class="hero-card">
+    <figcaption><span>resona.work</span><span>${esc(t.work.items[0].status)}</span></figcaption>
+    <img src="/assets/half/resona.png" width="1200" height="750" alt="" decoding="async">
+  </figure>
+</aside>
+</div>
+
+<ul class="meta hero-meta">${kv(t.hero.meta)}</ul>
 
 <section id="help">
   ${sectionHead(t.help)}
