@@ -10,4 +10,4 @@ python3 scripts/halftone.py   # assets/src/*.png → assets/half/*.png (diamond 
 bash scripts/capture.sh       # re-screenshot the live products into assets/src/
 ```
 
-Design: shared 1px grid lines, dot-matrix display titles (a CSS mask over Unbounded, works for Cyrillic), diamond-halftone plates generated offline with Pillow. Fonts are self-hosted subsets.
+Design: shared 1px grid lines, dot-matrix display titles (Tiny5, a 1/8 em pixel font with Cyrillic, under a per-pixel dot mask), diamond-halftone plates generated offline with Pillow. Fonts are self-hosted subsets.
