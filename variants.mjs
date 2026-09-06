@@ -18,7 +18,7 @@ html[lang="en"] h2.dots { font-size: clamp(24px, 4.2vw, 48px); }`,
 @font-face { font-family: "Tiny5"; font-weight: 400; font-display: swap; src: url(/assets/fonts/tiny5-lat.woff2) format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 .dots { font-family: "Tiny5", var(--display); font-weight: 400; letter-spacing: 0; line-height: 0.875; }
 .dots span { padding-bottom: 0;
-  -webkit-mask-image: radial-gradient(circle, #000 0 37%, transparent 43%); mask-image: radial-gradient(circle, #000 0 37%, transparent 43%);
+  -webkit-mask-image: radial-gradient(circle, #000 0 27%, transparent 33%); mask-image: radial-gradient(circle, #000 0 27%, transparent 33%);
   -webkit-mask-size: 0.125em 0.125em; mask-size: 0.125em 0.125em; }
 h1.dots { font-size: clamp(40px, 9.4vw, 104px); margin: 24px 0 36px; }
 .dots span + span { margin-top: 0.125em; }
