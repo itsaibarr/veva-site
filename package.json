@@ -1,0 +1,10 @@
+{
+  "name": "veva-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node build.mjs && node test.mjs",
+    "test:offline": "node build.mjs && node test.mjs --offline"
+  }
+}
