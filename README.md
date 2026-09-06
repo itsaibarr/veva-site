@@ -1,6 +1,6 @@
 # veva-site
 
-One-page capability site (RU at `/`, EN at `/en/`). No framework: `content.mjs` holds every word, `build.mjs` writes `dist/`, `test.mjs` checks structure, a red list of claims that must never appear, and every external link.
+One-page capability site (RU at `/`, EN at `/en/`). No framework: `content.mjs` holds every word, `build.mjs` writes `dist/`, `test.mjs` checks structure, a red list of claims that must never appear, and every external link (LinkedIn is skipped: it answers 999 to every non-browser client).
 
 ```
 npm run build          # dist/

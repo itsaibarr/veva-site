@@ -10,7 +10,7 @@ paper-dominant. Output is 1200x750 (16:10), a few colours, small.
 """
 import sys
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageOps
+from PIL import Image, ImageDraw, ImageOps, ImageStat
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC, OUT = ROOT / "assets/src", ROOT / "assets/half"
@@ -28,7 +28,7 @@ def plate(src: Path) -> Path:
     cw, ch = w / z, h / z
     im = im.crop((int((w - cw) / 2), int(h * 0.04), int((w + cw) / 2), int(h * 0.04 + ch)))
     im = ImageOps.fit(im, (W, H))
-    if ImageOps.autocontrast(im).resize((1, 1), Image.BOX).getpixel((0, 0)) < 110:   # dark page: invert so paper dominates
+    if ImageStat.Stat(im).mean[0] < 110:   # dark page: invert so paper dominates
         im = ImageOps.invert(im)
     small = im.resize((W // CELL, H // CELL), Image.BOX)   # mean luminance per cell
 
@@ -46,7 +46,7 @@ def plate(src: Path) -> Path:
             cx, cy = i * c + c / 2, j * c + c / 2
             draw.polygon([(cx, cy - r), (cx + r, cy), (cx, cy + r), (cx - r, cy)], fill=INK)
 
-    out = canvas.resize((W, H), Image.LANCZOS).quantize(colors=16)
+    out = canvas.resize((W, H), Image.LANCZOS).quantize(colors=4)
     OUT.mkdir(exist_ok=True)
     dest = OUT / (src.stem + ".png")
     out.save(dest, optimize=True)

@@ -1,30 +1,35 @@
-// node build.mjs → dist/index.html (ru), dist/en/index.html, dist/assets/  (CSS is inlined)
+// node build.mjs → dist/<path>index.html per language + dist/assets/  (CSS is inlined)
 import { mkdirSync, writeFileSync, cpSync, rmSync, existsSync, readFileSync } from "node:fs";
-import { CONTENT } from "./content.mjs";
+import { basename } from "node:path";
+import { CONTENT, SECTIONS } from "./content.mjs";
 
-// Absolute origin for hreflang/og:url; Vercel injects the production host at build time.
-const ORIGIN = process.env.SITE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "");
+// Absolute origin for hreflang/canonical. Vercel injects the production host at
+// build time; without any origin the tags are omitted rather than emitted relative.
+const ORIGIN = (process.env.SITE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "")).replace(/\/$/, "");
+if (!ORIGIN) console.warn("build: no SITE_URL / VERCEL_PROJECT_PRODUCTION_URL, skipping canonical + hreflang");
 const CSS = readFileSync("style.css", "utf8");
+// Latin subsets carry digits and punctuation, so every page needs them; Cyrillic only on RU.
+const FONTS = (lang) => ["unbounded-lat", "inter-lat", "inter-arrow", "mono-lat", ...(lang === "ru" ? ["unbounded-cyr", "inter-cyr", "mono-cyr"] : [])];
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const ext = (href) => (href.startsWith("http") ? ' target="_blank" rel="noopener"' : "");
 const a = (link, cls = "") => `<a class="${cls}" href="${esc(link.href)}"${ext(link.href)}>${esc(link.label)}</a>`;
 const dots = (lines, tag = "h1") => `<${tag} class="dots">${lines.map((l) => `<span>${esc(l)}</span>`).join("")}</${tag}>`;
-const sectionHead = (s, id) => `<div class="shead"><p class="label">${esc(s.label)}</p>${dots([s.title], "h2")}</div>`;
-
-// The outreach engine's public status document, shown instead of a screenshot.
-const STATUS_JSON = `{
-  "service": "resona-outreach",
-  "killSwitch": "on",
-  "sendEnabled": false
-}`;
+const sectionHead = (s) => `<div class="shead"><p class="label">${esc(s.label)}</p>${dots([s.title], "h2")}</div>`;
+const nn = (i) => String(i + 1).padStart(2, "0");
+// numbered list items: [heading, text] or {title, text, ev}
+const numbered = (items) => items.map((it, i) => {
+  const [h, p, ev] = Array.isArray(it) ? it : [it.title, it.text, it.ev];
+  return `<li><span class="label">${nn(i)}</span><h3>${esc(h)}</h3><p>${esc(p)}</p>${ev ? `<p class="ev">${esc(ev)}</p>` : ""}</li>`;
+}).join("");
+const kv = (pairs) => pairs.map(([k, v]) => `<li><span class="label">${esc(k)}</span><span>${esc(v)}</span></li>`).join("");
 
 function card(c, f) {
   const media = c.image
     ? `<img class="plate" src="/assets/half/${c.image}.png" width="1200" height="750" alt="" loading="lazy" decoding="async">`
-    : `<pre class="plate plate-text" aria-hidden="true">${esc(STATUS_JSON)}</pre>`;
+    : c.plateText ? `<pre class="plate plate-text" aria-hidden="true">${esc(c.plateText)}</pre>` : "";
   const proofs = [c.proof, c.proof2].filter(Boolean).map((p) => a(p, "proof")).join(" ");
-  return `<article class="card" id="p-${c.id}">
+  return `<article class="card">
   ${media}
   <div class="card-head"><h3>${esc(c.name)}</h3><span class="tag">${esc(c.status)}</span></div>
   <dl class="fields">
@@ -39,6 +44,13 @@ function card(c, f) {
 
 function page(t) {
   const alt = CONTENT[t.lang === "ru" ? "en" : "ru"];
+  const langLink = (cls = "") => `<a class="${cls}" href="${alt.path}" hreflang="${alt.lang}" lang="${alt.lang}">${alt.lang.toUpperCase()}</a>`;
+  const seo = ORIGIN ? `
+<link rel="alternate" hreflang="${t.lang}" href="${ORIGIN}${t.path}">
+<link rel="alternate" hreflang="${alt.lang}" href="${ORIGIN}${alt.path}">
+<link rel="alternate" hreflang="x-default" href="${ORIGIN}/">
+<link rel="canonical" href="${ORIGIN}${t.path}">
+<meta property="og:url" content="${ORIGIN}${t.path}">` : "";
   return `<!doctype html>
 <html lang="${t.lang}">
 <head>
@@ -48,14 +60,9 @@ function page(t) {
 <meta name="description" content="${esc(t.description)}">
 <meta property="og:title" content="${esc(t.title)}">
 <meta property="og:description" content="${esc(t.description)}">
-<meta property="og:type" content="website">
-<link rel="alternate" hreflang="${t.lang}" href="${ORIGIN}${t.path}">
-<link rel="alternate" hreflang="${alt.lang}" href="${ORIGIN}${alt.path}">
-<link rel="alternate" hreflang="x-default" href="${ORIGIN}/">
-<link rel="canonical" href="${ORIGIN}${t.path}">
+<meta property="og:type" content="website">${seo}
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="/assets/fonts/unbounded-${t.lang === "ru" ? "cyr" : "lat"}.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/inter-${t.lang === "ru" ? "cyr" : "lat"}.woff2" as="font" type="font/woff2" crossorigin>
+${FONTS(t.lang).map((f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" as="font" type="font/woff2" crossorigin>`).join("\n")}
 <style>${CSS}</style>
 </head>
 <body>
@@ -63,8 +70,8 @@ function page(t) {
 
 <header class="top">
   <a class="brand" href="${t.path}">${esc(t.hero.label.split(" · ")[0])}</a>
-  <nav aria-label="${t.lang === "ru" ? "Разделы" : "Sections"}">${t.nav.map(([h, l]) => `<a href="${h}">${esc(l)}</a>`).join("")}</nav>
-  <a class="lang" href="${t.otherPath}" hreflang="${alt.lang}" lang="${alt.lang}">${esc(t.otherLabel)}</a>
+  <nav aria-label="${t.lang === "ru" ? "Разделы" : "Sections"}">${SECTIONS.map((id, i) => `<a href="#${id}">${esc(t.nav[i])}</a>`).join("")}</nav>
+  ${langLink("lang")}
 </header>
 
 <main>
@@ -73,12 +80,12 @@ function page(t) {
   ${dots(t.hero.title)}
   <p class="lead">${esc(t.hero.lead)}</p>
   <div class="ctas">${a(t.hero.cta, "btn")}${a(t.hero.cta2, "btn ghost")}</div>
-  <ul class="meta">${t.hero.meta.map(([k, v]) => `<li><span class="label">${esc(k)}</span><span>${esc(v)}</span></li>`).join("")}</ul>
+  <ul class="meta">${kv(t.hero.meta)}</ul>
 </section>
 
 <section id="help">
   ${sectionHead(t.help)}
-  <ol class="tiles">${t.help.items.map((i) => `<li><span class="label">${esc(i.n)}</span><h3>${esc(i.title)}</h3><p>${esc(i.text)}</p><p class="ev">${esc(i.ev)}</p></li>`).join("")}</ol>
+  <ol class="tiles">${numbered(t.help.items)}</ol>
 </section>
 
 <section id="work">
@@ -92,14 +99,14 @@ function page(t) {
 <section id="veva">
   ${sectionHead(t.veva)}
   <p class="intro">${esc(t.veva.intro)}</p>
-  <ol class="qs">${t.veva.items.map(([h, p], i) => `<li><span class="label">${String(i + 1).padStart(2, "0")}</span><h3>${esc(h)}</h3><p>${esc(p)}</p></li>`).join("")}</ol>
+  <ol class="qs">${numbered(t.veva.items)}</ol>
   <p class="note label">${esc(t.veva.note)}</p>
 </section>
 
 <section id="how">
   ${sectionHead(t.how)}
-  <ol class="steps">${t.how.steps.map(([h, p], i) => `<li><span class="label">${String(i + 1).padStart(2, "0")}</span><h3>${esc(h)}</h3><p>${esc(p)}</p></li>`).join("")}</ol>
-  <ul class="meta facts">${t.how.facts.map(([k, v]) => `<li><span class="label">${esc(k)}</span><span>${esc(v)}</span></li>`).join("")}</ul>
+  <ol class="steps">${numbered(t.how.steps)}</ol>
+  <ul class="meta facts">${kv(t.how.facts)}</ul>
 </section>
 
 <section id="contact">
@@ -111,7 +118,7 @@ function page(t) {
 
 <footer class="foot">
   <p>${esc(t.footer.line)}</p>
-  <p>${a(t.footer.veva)} · <a href="${t.otherPath}" hreflang="${alt.lang}" lang="${alt.lang}">${esc(t.otherLabel)}</a></p>
+  <p>${a(t.footer.veva)} · ${langLink()}</p>
 </footer>
 
 </div>
@@ -121,8 +128,9 @@ function page(t) {
 }
 
 if (existsSync("dist")) rmSync("dist", { recursive: true });
-mkdirSync("dist/en", { recursive: true });
-writeFileSync("dist/index.html", page(CONTENT.ru));
-writeFileSync("dist/en/index.html", page(CONTENT.en));
-cpSync("assets", "dist/assets", { recursive: true, filter: (p) => !p.includes("/src") });
-console.log("built dist/ (ru, en)");
+for (const t of Object.values(CONTENT)) {
+  mkdirSync(`dist${t.path}`, { recursive: true });
+  writeFileSync(`dist${t.path}index.html`, page(t));
+}
+cpSync("assets", "dist/assets", { recursive: true, filter: (p) => basename(p) !== "src" });
+console.log(`built dist/ (${Object.keys(CONTENT).join(", ")})`);

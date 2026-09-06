@@ -36,22 +36,24 @@ const LINKS = {
 
 export const BUILT_ON = "2026-09-07";
 
+// Section order, shared by the nav, the template and the test.
+export const SECTIONS = ["help", "work", "veva", "how", "contact"];
+
+// The outreach engine's public status document, shown on its card instead of a screenshot.
+export const STATUS_JSON = `{
+  "service": "resona-outreach",
+  "killSwitch": "on",
+  "sendEnabled": false
+}`;
+
 export const CONTENT = {
   ru: {
     lang: "ru",
     path: "/",
-    otherPath: "/en/",
-    otherLabel: "EN",
     title: "Айбар Ержуман — ИИ-системы, автоматизация, цифровые продукты",
     description:
       "Собираю ИИ-интеграции, внутренние инструменты и сайты, которыми бизнес реально пользуется. Пять продуктов на своих доменах в 2026 году, все в одиночку.",
-    nav: [
-      ["#help", "Чем помогу"],
-      ["#work", "Работы"],
-      ["#veva", "Для VEVA"],
-      ["#how", "Как работаю"],
-      ["#contact", "Контакт"],
-    ],
+    nav: ["Чем помогу", "Работы", "Для VEVA", "Как работаю", "Контакт"],
     hero: {
       label: "Айбар Ержуман · Астана",
       title: ["ИИ.", "АВТОМАТИЗАЦИЯ.", "ПРОДУКТ."],
@@ -70,31 +72,26 @@ export const CONTENT = {
       title: "ЧЕМ ПОМОГУ",
       items: [
         {
-          n: "01",
           title: "ИИ-автоматизации и интеграции",
           text: "Подключаю языковые модели к тому, что уже есть: почта, таблицы, Airtable, мессенджеры. Модель получает проверенные данные, а не доступ к базе.",
           ev: "Hackathon-Ops, Pain Signal Agent",
         },
         {
-          n: "02",
           title: "Внутренние инструменты и процессы",
           text: "Небольшие панели под конкретный процесс: скрининг резюме, рассылки, учёт заявок. Без лишних экранов.",
           ev: "Strata, Antitrash",
         },
         {
-          n: "03",
           title: "Агентные системы",
           text: "Конвейеры, где модель принимает решения по шагам, а результат проверяет код и тесты.",
           ev: "Klip, Scout",
         },
         {
-          n: "04",
           title: "Сайты и лендинги",
           text: "Быстрые многоязычные страницы с формами, которые пишут в базу и отправляют письма. Без WordPress-плагинов.",
           ev: "Resona, EduReview",
         },
         {
-          n: "05",
           title: "Данные и сбор информации",
           text: "Сбор компаний и контактов из 2ГИС, Google Maps и открытых сайтов с учётом robots.txt и согласий на рассылку.",
           ev: "Outreach engine, Scout",
@@ -122,7 +119,7 @@ export const CONTENT = {
           id: "outreach",
           name: "Outreach engine",
           status: "развёрнут · отправка выключена",
-          image: null,
+          plateText: STATUS_JSON,
           problem: "Холодный поиск клиентов вручную: часы в 2ГИС, таблицы, потерянные ответы и риск попасть в спам.",
           built: "Сбор компаний из 2ГИС и Google Maps → поиск контактов с учётом robots.txt → фильтр согласий по странам (KZ, UK, US) → пул почтовых ящиков с лимитами → ответы из IMAP → отписка в один клик → выгрузка в Google Sheets. Аварийный стоп.",
           stack: "TypeScript, Next.js API, Supabase, Scrapy, SMTP / IMAP, WhatsApp Cloud API. Автотесты без сети.",
@@ -233,18 +230,10 @@ export const CONTENT = {
   en: {
     lang: "en",
     path: "/en/",
-    otherPath: "/",
-    otherLabel: "RU",
     title: "Aibar Yerzhuman — AI systems, automation, digital products",
     description:
       "I build AI integrations, internal tools and websites a business actually uses. Five products on their own domains in 2026, all built solo.",
-    nav: [
-      ["#help", "What I do"],
-      ["#work", "Work"],
-      ["#veva", "For VEVA"],
-      ["#how", "How I work"],
-      ["#contact", "Contact"],
-    ],
+    nav: ["What I do", "Work", "For VEVA", "How I work", "Contact"],
     hero: {
       label: "Aibar Yerzhuman · Astana",
       title: ["AI.", "AUTOMATION.", "PRODUCT."],
@@ -263,31 +252,26 @@ export const CONTENT = {
       title: "WHAT I CAN HELP WITH",
       items: [
         {
-          n: "01",
           title: "AI automations and integrations",
           text: "I connect language models to what you already have: email, spreadsheets, Airtable, messengers. The model gets verified data, not database access.",
           ev: "Hackathon-Ops, Pain Signal Agent",
         },
         {
-          n: "02",
           title: "Internal tools and workflows",
           text: "Small panels built around one process: CV screening, mailing lists, request tracking. No extra screens.",
           ev: "Strata, Antitrash",
         },
         {
-          n: "03",
           title: "Agentic systems",
           text: "Pipelines where the model makes step-by-step decisions and code plus tests check the result.",
           ev: "Klip, Scout",
         },
         {
-          n: "04",
           title: "Websites and landing pages",
           text: "Fast multilingual pages with forms that write to a database and send emails. No WordPress plugins.",
           ev: "Resona, EduReview",
         },
         {
-          n: "05",
           title: "Data and scraping workflows",
           text: "Collecting companies and contacts from 2GIS, Google Maps and public websites, respecting robots.txt and consent rules.",
           ev: "Outreach engine, Scout",
@@ -315,7 +299,7 @@ export const CONTENT = {
           id: "outreach",
           name: "Outreach engine",
           status: "deployed · sending off",
-          image: null,
+          plateText: STATUS_JSON,
           problem: "Manual cold prospecting: hours in 2GIS, spreadsheets, lost replies and a real risk of landing in spam.",
           built: "Company sourcing from 2GIS and Google Maps → contact discovery that respects robots.txt → per-country consent gate (KZ, UK, US) → mailbox pool with pacing → replies synced from IMAP → one-click unsubscribe → export to Google Sheets. Kill switch.",
           stack: "TypeScript, Next.js API routes, Supabase, Scrapy, SMTP / IMAP, WhatsApp Cloud API. Offline test suite.",
