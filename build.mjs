@@ -1,6 +1,10 @@
-// node build.mjs → dist/index.html (ru), dist/en/index.html, dist/style.css, dist/assets/
-import { mkdirSync, writeFileSync, cpSync, rmSync, existsSync } from "node:fs";
+// node build.mjs → dist/index.html (ru), dist/en/index.html, dist/assets/  (CSS is inlined)
+import { mkdirSync, writeFileSync, cpSync, rmSync, existsSync, readFileSync } from "node:fs";
 import { CONTENT } from "./content.mjs";
+
+// Absolute origin for hreflang/og:url; Vercel injects the production host at build time.
+const ORIGIN = process.env.SITE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "");
+const CSS = readFileSync("style.css", "utf8");
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const ext = (href) => (href.startsWith("http") ? ' target="_blank" rel="noopener"' : "");
@@ -45,12 +49,14 @@ function page(t) {
 <meta property="og:title" content="${esc(t.title)}">
 <meta property="og:description" content="${esc(t.description)}">
 <meta property="og:type" content="website">
-<link rel="alternate" hreflang="${t.lang}" href="${t.path}">
-<link rel="alternate" hreflang="${alt.lang}" href="${alt.path}">
+<link rel="alternate" hreflang="${t.lang}" href="${ORIGIN}${t.path}">
+<link rel="alternate" hreflang="${alt.lang}" href="${ORIGIN}${alt.path}">
+<link rel="alternate" hreflang="x-default" href="${ORIGIN}/">
+<link rel="canonical" href="${ORIGIN}${t.path}">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/unbounded-${t.lang === "ru" ? "cyr" : "lat"}.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter-${t.lang === "ru" ? "cyr" : "lat"}.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/style.css">
+<style>${CSS}</style>
 </head>
 <body>
 <div class="frame">
@@ -61,6 +67,7 @@ function page(t) {
   <a class="lang" href="${t.otherPath}" hreflang="${alt.lang}" lang="${alt.lang}">${esc(t.otherLabel)}</a>
 </header>
 
+<main>
 <section class="hero" id="hero">
   <p class="label">${esc(t.hero.label)}</p>
   ${dots(t.hero.title)}
@@ -100,6 +107,7 @@ function page(t) {
   <p class="intro">${esc(t.contact.intro)}</p>
   <ul class="channels">${t.contact.items.map(([k, c]) => `<li><span class="label">${esc(k)}</span><a href="${esc(c.href)}"${ext(c.href)}>${esc(c.value)}</a></li>`).join("")}</ul>
 </section>
+</main>
 
 <footer class="foot">
   <p>${esc(t.footer.line)}</p>
@@ -116,6 +124,5 @@ if (existsSync("dist")) rmSync("dist", { recursive: true });
 mkdirSync("dist/en", { recursive: true });
 writeFileSync("dist/index.html", page(CONTENT.ru));
 writeFileSync("dist/en/index.html", page(CONTENT.en));
-cpSync("style.css", "dist/style.css");
 cpSync("assets", "dist/assets", { recursive: true, filter: (p) => !p.includes("/src") });
 console.log("built dist/ (ru, en)");
