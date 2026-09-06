@@ -2,14 +2,17 @@
 import { mkdirSync, writeFileSync, cpSync, rmSync, existsSync, readFileSync } from "node:fs";
 import { basename } from "node:path";
 import { CONTENT, SECTIONS } from "./content.mjs";
+import { VARIANTS } from "./variants.mjs";
 
 // Absolute origin for hreflang/canonical. Vercel injects the production host at
 // build time; without any origin the tags are omitted rather than emitted relative.
 const ORIGIN = (process.env.SITE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "")).replace(/\/$/, "");
 if (!ORIGIN) console.warn("build: no SITE_URL / VERCEL_PROJECT_PRODUCTION_URL, skipping canonical + hreflang");
-const CSS = readFileSync("style.css", "utf8");
+const VARIANT = VARIANTS[process.env.TITLE_FONT] || null;
+if (process.env.TITLE_FONT && !VARIANT) throw new Error(`unknown TITLE_FONT ${process.env.TITLE_FONT}`);
+const CSS = readFileSync("style.css", "utf8") + (VARIANT?.css ?? "");
 // Latin subsets carry digits and punctuation, so every page needs them; Cyrillic only on RU.
-const FONTS = (lang) => ["unbounded-lat", "inter-lat", "inter-arrow", "mono-lat", ...(lang === "ru" ? ["unbounded-cyr", "inter-cyr", "mono-cyr"] : [])];
+const FONTS = (lang) => [...(VARIANT?.fonts ?? []), "unbounded-lat", "inter-lat", "inter-arrow", "mono-lat", ...(lang === "ru" ? ["unbounded-cyr", "inter-cyr", "mono-cyr"] : [])];
 
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const ext = (href) => (href.startsWith("http") ? ' target="_blank" rel="noopener"' : "");
@@ -67,7 +70,7 @@ ${FONTS(t.lang).map((f) => `<link rel="preload" href="/assets/fonts/${f}.woff2" 
 </head>
 <body>
 <div class="frame">
-
+${VARIANT ? `<p class="label variant">${esc(VARIANT.label)}</p>` : ""}
 <header class="top">
   <a class="brand" href="${t.path}">${esc(t.hero.label.split(" · ")[0])}</a>
   <nav aria-label="${t.lang === "ru" ? "Разделы" : "Sections"}">${SECTIONS.map((id, i) => `<a href="#${id}">${esc(t.nav[i])}</a>`).join("")}</nav>

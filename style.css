@@ -88,6 +88,9 @@ h2.dots { font-size: clamp(26px, 4.6vw, 52px); }
 .intro { max-width: 62ch; font-size: 18px; line-height: 1.5; margin-bottom: 36px; color: var(--ink); }
 .note { margin-top: 24px; }
 
+/* Experiment banner (only on TITLE_FONT builds) */
+.variant { padding: 10px var(--pad); border-bottom: 1px solid var(--line); background: var(--paper-2); text-transform: none; letter-spacing: 0; }
+
 /* Header */
 .top {
   display: grid;
